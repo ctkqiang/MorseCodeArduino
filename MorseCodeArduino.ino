@@ -7,11 +7,10 @@ const int LED13 = 0xD;
 const int TONE = NOTE_C5;
 const int PUSH_BUTTON = 0x2;
 const int PIEZO = 0x8;
-const int PIEZO_FREQ = 0x64; // 0x3E8;
+const int PIEZO_FREQ = 0x3E8;
 const int PIEZO_DELAY = 0x10;
 
 int BUTTON_STATE = 0x0;
-char _input;
 
 void setup()
 {
@@ -42,11 +41,11 @@ void beep()
 
   if (BUTTON_STATE != HIGH)
   {
-    log(".");
-    //playTone(getTempo());
+    // log(".");
+    playTone(getTempo());
 
     /* TODO add MORE FEATURE !*/
-    translate("A");
+    // translate("B");
   }
 }
 
@@ -96,6 +95,15 @@ void translate(String letter)
   }
   else if (letter == "B")
   {
+      longBeep();
+      delayMicroseconds(0x64 * 0x2);
+
+      for (int i = 0x1; i < 3; i++)
+      {
+          beepOnce();
+         delayMicroseconds(0x64);
+      }
+      
       log("__...");  
   }
   else
