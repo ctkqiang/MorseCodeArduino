@@ -1,16 +1,17 @@
-#include "pitches.h"
+#include "melody.h"
 
 const String APP_NAME = "Morse Code ";
 const long BAUDRATE = 0x2580;
 const int LED7 = 0x7;
 const int LED13 = 0xD;
-const int TONE = NOTE_C8;
+const int TONE = NOTE_C5;
 const int PUSH_BUTTON = 0x2;
 const int PIEZO = 0x8;
-const int PIEZO_FREQ = 0x3E8;
+const int PIEZO_FREQ = 0x64; // 0x3E8;
 const int PIEZO_DELAY = 0x10;
 
 int BUTTON_STATE = 0x0;
+char _input;
 
 void setup()
 {
@@ -39,10 +40,13 @@ void beep()
 {
   BUTTON_STATE = digitalRead(PUSH_BUTTON);
 
-  if (BUTTON_STATE == LOW)
+  if (BUTTON_STATE != HIGH)
   {
-    log(">>>>");
-    playTone(getTempo());
+    log(".");
+    //playTone(getTempo());
+
+    /* TODO add MORE FEATURE !*/
+    translate("A");
   }
 }
 
@@ -65,4 +69,37 @@ void playTone(int duration)
 {
   tone(PIEZO, PIEZO_FREQ, PIEZO_DELAY);
   delayMicroseconds(TONE);
+}
+
+void beepOnce()
+{
+  tone(PIEZO, PIEZO_FREQ, 0x64);
+  delayMicroseconds(TONE);
+}
+
+void longBeep()
+{
+  tone(PIEZO, PIEZO_FREQ, 0x1F4); 
+  delayMicroseconds(TONE);
+}
+
+void translate(String letter)
+{
+  if (letter == "A")
+  {
+      beepOnce();
+      delay(0xFF);
+      longBeep();
+      delay(0x64);
+
+      log(".__");
+  }
+  else if (letter == "B")
+  {
+      log("__...");  
+  }
+  else
+  {
+    log("unknown");
+  }
 }
